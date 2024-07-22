@@ -13,6 +13,7 @@ class PostDatedChequesTool(Document):
 				frappe.throw("Bank Account required on row {}".format(str(d.idx)))
 			check = frappe.db.get_value("Payment Entry", {"custom_post_dated_cheques": d.post_dated_cheques, "docstatus": ("!=", 2)}, "name")
 			if not check:
+				print(d.name)
 				pdc = frappe.get_doc("Post Dated Cheques", d.post_dated_cheques)
 				doc = frappe.new_doc("Payment Entry")
 				doc.company = d.company
@@ -25,6 +26,7 @@ class PostDatedChequesTool(Document):
 				doc.reference_date = d.reference_date
 				doc.party_type = d.party_type
 				doc.party = d.party
+				doc.custom_post_dated_cheque_reference = self.name
 				doc.paid_amount = d.amount
 				doc.received_amount = pdc.base_amount
 				doc.source_exchange_rate = 1
